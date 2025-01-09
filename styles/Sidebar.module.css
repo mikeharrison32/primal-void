@@ -1,0 +1,39 @@
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #272727;
+    color: #ecf0f1;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.listItem {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background-color: #34495e;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.listItem:hover {
+    background-color: #1abc9c;
+}

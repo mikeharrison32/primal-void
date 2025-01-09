@@ -1,49 +1,52 @@
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import styles from "../styles/Dashboard.module.css";
 
 const Dashboard = () => {
   const [announcements, setAnnouncements] = useState([]);
-  const [newAnnouncement, setNewAnnouncement] = useState("");
+  const [announcementData, setAnnouncementData] = useState({
+    title: "",
+    description: "",
+  });
   const [channelId, setChannelId] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // Fetch existing announcements from the bot's API when the page loads
-    // fetch("/api/announcements", { method: "GET" })
-    //   .then((res) => res.json())
-    //   .then((data) => setAnnouncements(data))
-    //   .catch((err) => console.error("Failed to fetch announcements:", err));
-    console.log("moew");
-  }, []);
-
-  const handleNewAnnouncement = async () => {
-    if (!newAnnouncement.trim() || !channelId.trim()) {
-      alert("Please provide both a channel ID and a message.");
-      return;
-    }
-    setLoading(true);
-
+  const handleNewAnnouncement = async (channelId, title, description) => {
     try {
-      const response = await fetch("/api/announcements", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: newAnnouncement, channelId }),
-      });
+      const response = await fetch(
+        "https://primal-void-bot.onrender.com/announcements",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Ensure the request is in JSON format
+          },
+          body: JSON.stringify({ channelId, title, description }), // Send both title and description
+        }
+      );
 
       if (response.ok) {
-        const updatedAnnouncements = await response.json();
-        setAnnouncements(updatedAnnouncements);
-        setNewAnnouncement("");
-        setChannelId("");
+        const data = await response.json();
+        console.log(data.message); // Output success message
+        setAnnouncementData({ title: "", description: "" }); // Clear title and description after posting
       } else {
-        const errorMessage = await response.text();
-        console.error("Failed to create announcement:", errorMessage);
+        const errorData = await response.json();
+        console.error("Error:", errorData.error);
       }
     } catch (error) {
       console.error("Error while creating announcement:", error);
-    } finally {
-      setLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // Prevents adding a newline
+      setLoading(true);
+      handleNewAnnouncement(
+        channelId,
+        announcementData.title,
+        announcementData.description
+      ).finally(() => {
+        setLoading(false);
+      });
     }
   };
 
@@ -63,15 +66,47 @@ const Dashboard = () => {
               placeholder="Enter Discord channel ID"
               className={styles.inputField}
             />
+            <input
+              type="text"
+              value={announcementData.title}
+              onChange={(e) =>
+                setAnnouncementData({
+                  ...announcementData,
+                  title: e.target.value,
+                })
+              }
+              placeholder="Enter announcement title"
+              className={styles.inputField}
+            />
             <textarea
-              value={newAnnouncement}
-              onChange={(e) => setNewAnnouncement(e.target.value)}
-              placeholder="Write a new announcement..."
+              value={announcementData.description}
+              onChange={(e) =>
+                setAnnouncementData({
+                  ...announcementData,
+                  description: e.target.value,
+                })
+              }
+              placeholder="Write a description..."
               className={styles.textareaField}
+              onKeyDown={handleKeyDown} // Detect Enter key press
             />
             <button
-              onClick={handleNewAnnouncement}
-              disabled={loading}
+              onClick={() => {
+                setLoading(true);
+                handleNewAnnouncement(
+                  channelId,
+                  announcementData.title,
+                  announcementData.description
+                ).finally(() => {
+                  setLoading(false);
+                });
+              }}
+              disabled={
+                loading ||
+                !channelId ||
+                !announcementData.title ||
+                !announcementData.description
+              }
               className={styles.submitButton}
             >
               {loading ? "Posting..." : "Post Announcement"}
@@ -80,7 +115,7 @@ const Dashboard = () => {
           <ul className={styles.announcementList}>
             {announcements.map((announcement, index) => (
               <li key={index} className={styles.announcementItem}>
-                {announcement.message}
+                {announcement.title}: {announcement.description}
               </li>
             ))}
           </ul>

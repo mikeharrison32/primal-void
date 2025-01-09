@@ -1,10 +1,9 @@
 .container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; 
   height: 100vh;
-  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  background: rgb(39, 39, 39);
   font-family: 'Poppins', sans-serif;
+  flex-direction: row;
 }
 
 .main {

@@ -2,7 +2,7 @@
     font-family: 'Poppins', sans-serif;
     color: #333;
     padding: 20px;
-    background: linear-gradient(to right, #4e54c8, #8f94fb);
+    background: rgb(63, 63, 63);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
