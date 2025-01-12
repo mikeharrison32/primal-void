@@ -4,6 +4,10 @@
   background: rgb(39, 39, 39);
   font-family: 'Poppins', sans-serif;
   flex-direction: row;
+  margin: -8px;
+  box-sizing: border-box;
+  overflow-y: hidden;
+
 }
 
 .main {

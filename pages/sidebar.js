@@ -5,23 +5,28 @@ import styles from "../styles/Sidebar.module.css"; // Ensure this path is correc
 const Sidebar = () => {
   return (
     <div className={styles.sidebar}>
-      <h2 className={styles.title}>Sidebar</h2>
       <ul className={styles.list}>
-        <li className={styles.listItem}>
-          <Link href="#announcements" className={styles.link}>
+        <Link href="#announcements" className={styles.link}>
+          <li className={styles.listItem}>
             Announcements
-          </Link>
-        </li>
-        <li className={styles.listItem}>
-          <Link href="#menu" className={styles.link}>
-            Menu
-          </Link>
-        </li>
-        <li className={styles.listItem}>
-          <Link href="#settings" className={styles.link}>
+          </li>
+        </Link>
+
+
+        <Link href="#menu" className={styles.link}>
+          <li className={styles.listItem}>
+          Menu
+          </li>
+        </Link>
+
+
+        <Link href="#settings" className={styles.link}>
+          <li className={styles.listItem}>
             Settings
-          </Link>
-        </li>
+          </li>
+        </Link>
+
+
       </ul>
     </div>
   );
